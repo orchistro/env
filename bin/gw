@@ -1,0 +1,2 @@
+#!/bin/bash
+ssh ncon1.nhnsystem.com -l shawn

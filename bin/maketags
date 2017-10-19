@@ -1,0 +1,9 @@
+#!/usr/local/bin/bash
+
+if [ $# -eq 0 ];
+then
+    echo usage : maketags rootdir
+    exit
+fi
+
+make -C $HOME/env/tags/$1 $2 $3 $4

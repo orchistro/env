@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ -e $1 ];
+then
+    echo Processing $1.
+else
+    echo File $1 does not exist in current directory.
+    exit 1
+fi
+
+atsclnt `pwd`/$1

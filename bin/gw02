@@ -1,0 +1,2 @@
+#!/bin/bash
+ssh gw02.nhnsystem.com -l shawn

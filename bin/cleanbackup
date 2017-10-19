@@ -1,0 +1,8 @@
+#!/usr/local/bin/bash
+echo Finding tar backup files
+find . -name '*tc_*.tar' -exec ls {} \;
+find . -name '*tc_*.tar' -exec rm -f {} \;
+echo Finding env backup files
+find . -name '*env*.out' -exec ls {} \;
+find . -name '*env*.out' -exec rm -f ls {} \;
+

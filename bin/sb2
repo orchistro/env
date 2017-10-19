@@ -1,0 +1,32 @@
+#!/usr/local/bin/bash
+
+if [ $# -ne 1 ]; 
+then
+    echo "Usage : sb2 username"
+    exit 1
+fi
+
+username=$1
+
+if [ ${username} == "sa" ];
+then
+    uopt="-U${username}"
+    popt=
+else
+    uopt="-U${username}"
+    popt="-P${username}"
+fi
+
+command="${ADI_TEST}/syb2/${SYBASE_OCS}/bin/isql ${uopt} ${popt} -Sshawn2"
+port=$((SYBASE_PORT + 800))
+sybase=${ADI_TEST}/syb2
+
+echo "==============================================================="
+echo "SYBASE  : " ${sybase}
+echo "Port    : " ${port}
+echo "Command : " ${command}
+echo "==============================================================="
+
+LANG=C SYBASE=${sybase} SYBASE_PORT=${port} ${command}
+
+

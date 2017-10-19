@@ -1,0 +1,5 @@
+#!/bin/bash
+pwd > __pwd
+perl -pi -e 's/cli2disk/cli2/g' __pwd
+CLI2DIR=`cat __pwd`
+cp $CLI2DIR/$1 $1

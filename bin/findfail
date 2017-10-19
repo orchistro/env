@@ -1,0 +1,19 @@
+#!/usr/local/bin/bash
+OSNAME=$(uname)
+LSOPT='-l'
+
+if [ ${OSNAME} == 'Linux' ];
+then
+    LSOPT='--full-time -o -g -h'
+fi
+
+if [ ${OSNAME} == 'SunOS' ];
+then
+    LSOPT='-e'
+fi
+
+echo Finding tar backup files
+find . -name '*tc_*.tar' -exec ls ${LSOPT} {} \;
+echo Finding env backup files
+find . -name '*env*.out' -exec ls ${LSOPT} {} \;
+

@@ -1,0 +1,17 @@
+#!/usr/local/bin/bash
+OSNAME=$(uname)
+
+# Solaris has wierd locales
+
+if [ ${OSNAME} == 'SunOS' ];
+then
+    unset LC_ALL;unset LANG;LC_CTYPE=ko_KR.EUC /usr/local/bin/gvim "$@"
+elif [ ${OSNAME} == 'HP-UX' ];
+then
+    # refer to /usr/lib/nls/loc/hpux64/locales
+    unset LC_ALL;unset LANG;LC_CTYPE=ko_KR.eucKR /usr/local/bin/gvim "$@"
+else
+    # LANG=ko_KR.EUC-KR;LC_MESSAGES=ko_KR.EUC-KR;/usr/local/bin/gvim "$@"
+    /usr/local/bin/gvim "$@"
+fi
+

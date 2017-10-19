@@ -1,0 +1,31 @@
+#!/usr/local/bin/bash
+osname=$(uname)
+lsopt='-l'
+
+if [ ${#} -ge 2 ];
+then
+    echo "Usage : findcore [directory]"
+    echo "   Finds core files from [directory]."
+    echo "   If [directory] is not specified, starts from current directory."
+    exit 1
+fi
+    
+if [ ${#} -eq 1 ];
+then
+    startdir=${1}
+else
+    startdir='.'
+fi
+
+if [ ${osname} == 'Linux' ];
+then
+    lsopt='--full-time -o -g -h'
+fi
+
+if [ ${osname} == 'SunOS' ];
+then
+    lsopt='-e'
+fi
+
+find ${startdir} -name 'core*' -exec ls ${lsopt} {} \;
+

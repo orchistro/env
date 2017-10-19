@@ -1,0 +1,35 @@
+#!/usr/bin/bash
+
+if [ ! $1 -o ${1:0:1} = "-" ]; then
+    mode=1
+    offset=7
+    filter="M"
+    option=$@
+elif [ ${1:0:1} = "+" ]; then
+    mode=1
+    offset=7
+    filter=${1:1}
+    option=${@:2}
+else
+    mode=0
+    offset=0
+fi
+
+if [ $mode -eq 1 ]; then
+    echo "diff all from SVN"
+    list=`svn st $option | grep ^[$filter]`
+else
+    echo "diff all from file: $1"
+    list=`cat $1`
+fi
+
+IFS="
+"
+
+for i in $list; do
+    file=${i:$offset}
+    if [ -f $file ]; then
+        echo $i
+        tkdiff $option $file
+    fi
+done;

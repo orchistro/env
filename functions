@@ -1,0 +1,112 @@
+function acd
+{
+    cd `get_dir.pl $1`
+}
+
+function psu
+{
+    if [ $# -eq 0 ]
+    then
+        ps -aef | grep "$LOGNAME "
+    else
+        ps -aef | grep "$LOGNAME " | grep $1
+    fi
+}
+
+function psitg
+{
+    if [ $# -eq 0 ]
+    then
+        ps -aef | grep "$LOGNAME "
+    else
+        ps -aef | grep "$LOGNAME " | grep $1
+    fi
+}
+
+function psid
+{
+    if [ $# -eq 0 ]
+    then
+       psu | grep -v grep | grep -v bash | awk '{print $2}' 
+    else
+       psu $1 | grep -v grep | grep -v bash | awk '{print $2}'
+    fi
+}
+
+function psal
+{
+    psu "bin/altibase" | grep -v grep | grep -v bash |  awk '{print $2}'
+}
+
+function compacted_date
+{
+    date | sed 's/ //g'
+}
+
+function cur_dir
+{
+    `pwd`
+}
+
+function lsdir
+{
+    ls -laF | grep ^d
+}
+
+function buildcscope
+{
+    rm -f cscope.out
+    echo 'cscope -b -q -R'
+    cscope -b -q -R
+}
+
+function cdcli2
+{
+    pwd > __pwd.dir
+    perl -pi -e 's/cli2disk/cli2/g' __pwd.dir
+    NEWDIR=`cat __pwd.dir`
+    rm -f __pwd.dir
+    cd $NEWDIR
+}
+
+function cdcli2disk
+{
+    pwd > __pwd.dir
+    perl -pi -e 's/cli2/cli2disk/g' __pwd.dir
+    NEWDIR=`cat __pwd.dir`
+    rm -f __pwd.dir
+    cd $NEWDIR
+}
+
+function cdbuild
+{
+    BUILDDIR_PREFIX='build/gcc-generic-debug-64/'
+    TARGET_DIR=${PWD/integrator/${BUILDDIR_PREFIX}integrator}
+    echo changind dir to : ${TARGET_DIR}
+    cd ${TARGET_DIR}
+}
+
+function cdsrc
+{
+    BUILDDIR_PREFIX='build/gcc-generic-debug-64/'
+    TARGET_DIR=${PWD/${BUILDDIR_PREFIX}/}
+    echo changind dir to : ${TARGET_DIR}
+    cd ${TARGET_DIR}
+}
+
+function mklst
+{
+    if [ $# -eq 0 ]
+    then
+       echo specify testcase name
+    fi
+
+    for tcname in $@ ;
+    do 
+        from=${tcname/.tc/.out}
+        to=${tcname/.tc/.lst}
+        echo cp ${from} ${to}
+        cp ${from} ${to}
+    done
+}
+

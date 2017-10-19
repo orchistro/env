@@ -1,0 +1,47 @@
+#!/usr/local/bin/bash
+
+if [ $# -lt 2 ]; then
+    echo "usage: diffdir dir1 dir2 [filelist]"
+fi
+
+if [ ${1:(${#1}-1)} = '/' ]; then
+    dir1=${1:0:(${#1}-1)}
+else
+    dir1=$1
+fi
+
+if [ ${2:(${#2}-1)} = '/' ]; then
+    dir2=${2:0:(${#2}-1)}
+else
+    dir2=$2
+fi
+
+if [ $3 ]; then
+    list=`cat $3`
+else
+    list=`find $dir1`
+fi
+
+IFS="
+"
+
+for file1 in $list; do
+    if [ -f $i ]; then
+        if [ $3 ]; then
+            file=$file1
+            file1=$dir1/$file
+        else
+            file=${file1:(${#dir1}+1)}
+        fi
+        file2=$dir2/$file
+        if [ -f $file2 ]; then
+            result=`diff $file1 $file2 2> /dev/null`
+            code=$?
+            if [ $code -ne 0 ]; then
+                echo "$code $file"
+            fi
+        elif [ ! -d $file2 ]; then
+            echo "0 $file"
+        fi
+    fi
+done;

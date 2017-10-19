@@ -1,0 +1,25 @@
+export OS_NAME=osx
+
+# prompt color Setting
+PROMPT_COLOR='0;35'
+
+# LOCALE setting
+export LANG=ko_KR.UTF-8
+export LC_MESSAGES=C
+export LC_TIME=C
+
+USE_PROMPT_COMMAND='yes'
+
+# ls of OSX does not print multibyte characters.
+# if ls is given -v option, it prints multibyte characters.
+LS_MULTIBYTE_OPTION='-v'
+export LS_COLOR_OPTION='-G'
+
+# GNU TOOLS
+export BASHPATH=/bin/bash
+export EXUBERENT_CTAGS=/usr/local/bin/ctags
+export GNUGREP=/usr/bin/grep
+export GNUMAKE=/usr/bin/make
+export VIPATH=/usr/bin/vim
+export GVIMPATH=/usr/local/bin/gvim
+

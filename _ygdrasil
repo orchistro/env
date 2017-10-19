@@ -1,0 +1,32 @@
+# ATAF and gvimrc font
+export OS_NAME=Linux
+
+# prompt color Setting
+PROMPT_COLOR='0;32'
+
+# LOCALE setting
+export LANG=ko_KR.UTF-8
+export LC_MESSAGES=C
+export LC_TIME=C
+
+# display username and hostname in the terminal's title bar
+USE_PROMPT_COMMAND='yes'
+
+# ls of OSX does not print multibyte characters.
+# if ls is given -v option, it prints multibyte characters.
+LS_MULTIBYTE_OPTION='-v'
+export LS_COLOR_OPTION='--color=auto'
+
+# ataf env file
+# ATAF_ENV_FILE=env.linux.sh
+
+# JAVA HOME
+# export JAVA_HOME=/usr/lib/j2se/1.4
+# export PATH=$JAVA_HOME/bin:$PATH
+
+# PATH
+
+# LD LIBRARY PATH
+
+# GNU TOOLS
+

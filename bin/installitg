@@ -1,0 +1,3 @@
+#!/usr/local/bin/bash
+
+atfrun ~/work/mdw/integrator/test/Setup/0_1_IntegratorSetup.tc

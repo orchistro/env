@@ -1,0 +1,10 @@
+#!/usr/local/bin/bash
+echo Removing all core files
+find . -name 'core*' -exec ls -1 {} \;
+find . -name 'core*' -exec rm -f {} \;
+echo Removing all run files
+find . -name '*run' -exec ls -1 {} \;
+find . -name '*run' -exec rm -f {} \;
+echo Removing all valgrind logs
+find . -name '*vallog' -exec ls -1 {} \;
+find . -name '*vallog' -exec rm -f {} \;

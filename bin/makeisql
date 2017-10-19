@@ -1,0 +1,14 @@
+#!/bin/bash
+echo
+echo Building utISPApi
+echo
+make -C $ALTIDEV_HOME/ut/lib clean
+make -C $ALTIDEV_HOME/ut/lib
+echo
+echo Removin isql binary
+rm -f $ALTIDEV_HOME/ut/isql/src/isql
+echo
+echo Linking isql binary
+echo
+make -C $ALTIDEV_HOME/ut/isql/src
+

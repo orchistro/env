@@ -1,0 +1,26 @@
+#!/usr/local/bin/bash
+
+function killpid
+{
+    ARGNAME=${1}
+
+    PID=`ps -aef | grep ${USER} | grep ${ARGNAME} | grep -v grep | grep -v ddd | grep -v gdb | awk '{print $2}'`
+
+    TMPPID=${PID:-notset}
+
+    for pid in ${TMPPID}; do
+        if [ ${pid} != 'notset' ]; then
+            echo killing ${ARGNAME} of pid ${pid}
+            kill -9 ${pid}
+        else
+            echo ${ARGNAME} is not running
+        fi
+    done;
+}
+
+killpid adi_ctrl
+killpid iadmin
+killpid adi_appl
+killpid adi_capt
+
+

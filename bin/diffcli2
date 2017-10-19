@@ -1,0 +1,13 @@
+#!/bin/bash
+pwd > __pwd
+perl -pi -e 's/cli2disk/cli2/g' __pwd
+CLI2DIR=`cat __pwd`
+
+if [ $# == 1 ]; then
+    tkdiff $CLI2DIR/$1 $1
+elif [ $# == 2 ]; then
+    tkdiff $CLI2DIR/$1 $2
+else
+    echo usage : diffcli2 filename [filename 2]
+fi
+

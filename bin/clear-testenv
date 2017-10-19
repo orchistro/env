@@ -1,0 +1,16 @@
+#!/usr/local/bin/bash
+
+killall -9 altibase
+
+echo Removing ${ADI_TEST}/alti*
+rm -rf ${ADI_TEST}/alti*
+
+echo Removing ${ADI_TEST}/ora*
+rm -rf ${ADI_TEST}/ora*
+
+echo Removing ${ADI_TEST}/syb*
+rm -rf ${ADI_TEST}/ora*
+
+echo Removing ${ADI_TEST}/itg*
+rm -rf ${ADI_TEST}/itg*
+

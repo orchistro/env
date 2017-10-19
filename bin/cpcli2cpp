@@ -1,0 +1,11 @@
+#!/bin/bash
+pwd > __pwd
+perl -pi -e 's/cli2disk/cli2/g' __pwd
+CLI2DIR=`cat __pwd`
+
+for cppfilename in `find . -name '*.cpp'`
+do
+    cp $CLI2DIR/$cppfilename $cppfilename
+    echo $cppfilename
+done
+

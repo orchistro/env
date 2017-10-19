@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/shawn/shawn/naver.trunk/include'
+let g:netrw_dirhist_2='/Users/shawn/work/queries'
+let g:netrw_dirhist_3='/Users/shawn/shawn/seal.trunk/idl/options'
+let g:netrw_dirhist_4='/Users/shawn/shawn/seal.trunk/idl/collect'
+let g:netrw_dirhist_5='/Users/shawn/work/seal/utilities/gen_doc'
