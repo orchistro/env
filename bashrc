@@ -17,7 +17,7 @@ umask 0002
 
 ENVDIR=${HOME}/env
 
-export HOSTNAME=`hostname`
+export HOSTNAME=$(hostname)
 
 # To disable alternate screen feature
 export LESS="-rfX"
@@ -33,10 +33,8 @@ source ${ENVDIR}/functions
 # PROMPT
 #########################################################
 
-hostName=$(hostname)
-
-tmpfile=${HOME}/__hostname
-echo ${hostName} > ${tmpfile}
+tmpfile=${ENVDIR}/__hostname
+echo ${HOSTNAME} > ${tmpfile}
 
 promptColor='1;30'
 
@@ -51,11 +49,11 @@ do
         promptColor=$(echo ${line} | awk '{print $2}')
         break
     fi
-done < .prompt_color_shawn
+done < ${ENVDIR}/prompt_color_for_host
 
 rm -f ${tmpfile}
 
-export PS1="\[\033[${promptColor}m\]\u@${hostName}:\w\$ \[\033[0m\]"
+export PS1="\[\033[${promptColor}m\]\u@${HOSTNAME}:\w\$ \[\033[0m\]"
 
 
 
