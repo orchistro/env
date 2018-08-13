@@ -44,7 +44,7 @@ do
 
     grep ${pattern} ${tmpfile} > /dev/null 2>&1
 
-    if [ $? -eq 0 ];
+    if [ "$?" -eq "0" ];
     then
         promptColor=$(echo ${line} | awk '{print $2}')
         break
@@ -57,7 +57,7 @@ export PS1="\[\033[${promptColor}m\]\u@${HOSTNAME}:\w\$ \[\033[0m\]"
 
 
 
-if [ ${USE_PROMPT_COMMAND} == 'yes' ]; # terminal title
+if [ "${USE_PROMPT_COMMAND}" == 'yes' ]; # terminal title
 then
     # export PROMPT_COMMAND='echo -ne "\033]0;${LOGNAME}@${HOSTNAME}:${PWD/$HOME/~} $(date +%c)\007"'
     export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}\007"'
@@ -80,7 +80,7 @@ stty intr "^c" erase "^?" susp "^z" kill "^u"
 # Since I started to use -X or -Y option of ssh, 
 # no need to set DISPLAY
 #########################################################
-# if [ ${USE_LOCAL_X_SERVER} == 'yes' ];
+# if [ "${USE_LOCAL_X_SERVER}" == 'yes' ];
 # then
 #     export DISPLAY=:1.0
 #     export DISPLAY=:0
@@ -120,28 +120,33 @@ grep_version_str=$(grep --version|awk '/GNU grep/ {print $NF}')
 grep_version_maj=$(echo ${grep_version_str} | awk -F'.' '{print $1}')
 grep_version_min=$(echo ${grep_version_str} | awk -F'.' '{print $2}')
 
-grep_exclude_dirs='test .\*'
-grep_exclude_files='*~ .\* #* *.map tags TAGS *_heapdebug *.output'
-grep_option_str='-I --color'
-
-for i in ${grep_exclude_files}
-do
-    grep_option_str="${grep_option_str} --exclude=${i}"
-done
-
-# for only GNU grep 2.6+, set exclude dir
-if [ $grep_version_maj -ge 2 ];
+if [ "${grep_version_str}" == "" ];
 then
-    if [ $grep_version_min -ge 6 ];
+    GREP_OPTIONS=""
+else
+    grep_exclude_dirs='test .\*'
+    grep_exclude_files='*~ .\* #* *.map tags TAGS *_heapdebug *.output'
+    grep_option_str='-I --color'
+    
+    for i in ${grep_exclude_files}
+    do
+        grep_option_str="${grep_option_str} --exclude=${i}"
+    done
+    
+    # for only GNU grep 2.6+, set exclude dir
+    if [ ${grep_version_maj} -ge 2 ];
     then
-        for i in ${grep_exclude_dirs}
-        do
-            grep_option_str="${grep_option_str} --exclude-dir=${i}"
-        done
+        if [ $grep_version_min -ge 6 ];
+        then
+            for i in ${grep_exclude_dirs}
+            do
+                grep_option_str="${grep_option_str} --exclude-dir=${i}"
+            done
+        fi
     fi
+    
+    export GREP_OPTIONS=${grep_option_str}
 fi
-
-export GREP_OPTIONS=${grep_option_str}
 
 ulimit -c unlimited
 
