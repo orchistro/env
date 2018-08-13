@@ -129,14 +129,9 @@ let Grep_OpenQuickfixWindow = 1
 let Grep_Default_Options = '-rn'
 
 " Suppress beeping and flashing screen
-if $OS_NAME == "osx"
-    set vb " macvim beeps unless this option is set
-    set noeb
-else
-    set vb t_vb=
-    set novb " gvim flashes screen without this option
-    set noeb
-endif
+set vb t_vb=
+set novb
+set noeb
 
 " Decorate doxygen comment.
 let g:load_doxygen_syntax=1

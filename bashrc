@@ -168,8 +168,3 @@ then
     fi
 fi
 
-function vi()
-{
-    vim -u ${HOME}/.vimrc_shawn -c "set path+=${PWD}/include" $@
-}
-
