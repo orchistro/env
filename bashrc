@@ -4,8 +4,6 @@ export LC_MESSAGES='C'
 export LC_TIME='C'
 export LC_CTYPE='ko_KR.UTF-8'
 
-export LESSCHARSET=utf-8
-
 # disabling auto-logout
 export TMOUT=
 
@@ -17,49 +15,27 @@ umask 0002
 
 ENVDIR=${HOME}/env
 
-export HOSTNAME=$(hostname)
+export HOSTNAME=$(/bin/hostname)
 
 # To disable alternate screen feature
 export LESS="-rfX"
 export MANPAGER="/usr/bin/less"
+export LESSCHARSET=utf-8
 
 #########################################################
 # Load host specific setting file
 #########################################################
-source ${ENVDIR}/_${HOSTNAME}
+source ${ENVDIR}/hostconf/${HOSTNAME}.conf
 source ${ENVDIR}/functions
 
 #########################################################
 # PROMPT
 #########################################################
-
-tmpfile=${ENVDIR}/__hostname
-echo ${HOSTNAME} > ${tmpfile}
-
-promptColor='1;30'
-
-while read line
-do
-    pattern=$(echo ${line} | awk '{print $1}')
-
-    grep ${pattern} ${tmpfile} > /dev/null 2>&1
-
-    if [ "$?" -eq "0" ];
-    then
-        promptColor=$(echo ${line} | awk '{print $2}')
-        break
-    fi
-done < ${ENVDIR}/prompt_color_for_host
-
-rm -f ${tmpfile}
-
-export PS1="\[\033[${promptColor}m\]\u@${HOSTNAME}:\w\$ \[\033[0m\]"
-
-
+prompt_color=$(get_prompt_color ${ENVDIR}/hostconf/prompt_colors.conf)
+export PS1="\[\033[${prompt_color}m\]\u@${HOSTNAME}:\w\$ \[\033[0m\]"
 
 if [ "${USE_PROMPT_COMMAND}" == 'yes' ]; # terminal title
 then
-    # export PROMPT_COMMAND='echo -ne "\033]0;${LOGNAME}@${HOSTNAME}:${PWD/$HOME/~} $(date +%c)\007"'
     export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}\007"'
 fi
 
@@ -97,7 +73,6 @@ PATH=/usr/local/bin:${PATH}
 PATH=${ENVDIR}/bin:${PATH}
 PATH=${PATH}:/bin:/sbin:/usr/sbin:/usr/bin
 PATH=${PATH}:/usr/X11R6/bin
-
 export PATH
 
 #########################################################

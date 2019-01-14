@@ -3,3 +3,113 @@ function vi()
     vim -u ${HOME}/env/vimrc -c "set path+=${PWD}/include" $@
 }
 
+function ps_mock()
+{
+    if [ "$#" == 1 ];
+    then
+        curdir=${1}
+    else
+        curdir=$(pwd)
+    fi
+
+    # Bash man page:
+    # ${parameter/pattern/string} :
+    # ... If pattern begins with /, all matches of pattern are replaced with string. ...
+    curdir=${curdir//\//\\\/}
+
+    ps -e -o user,pid,ppid,lstart,stat,command | head -n 1
+    ps -e -o user,pid,ppid,lstart,stat,command | grep 'mock\.py.*start [0-9]\+$' | grep "${curdir}"
+}
+
+function is_number()
+{
+    local argument=${1}
+
+    if ! [[ "${argument}" =~ ^[0-9]+([.][0-9]+)?$ ]];
+    then
+        echo "0"
+    else
+        echo "1"
+    fi
+}
+
+function ps_seal_core()
+{
+    local name_to_grep=$1
+    local end_of_string=$2
+    printf "  CNT %s\n" "$(ps -e -o user,pid,ppid,lstart,stat,command | head -1)"
+    declare -a process_names
+    original_ifs=$IFS
+    IFS=$'\n'
+    process_names=( $(ps -e -L -o command | grep -w "${name_to_grep}" | grep "${end_of_string}$" | grep -v 'grep\|vim\|tail' | sort | uniq) )
+    IFS=${original_ifs}
+
+    IFS=$'\n'
+    for p in ${process_names[@]};
+    do
+        IFS=${original_ifs}
+        cnt=$(ps -e -L -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -v grep | wc -l)
+        info=$(ps -e -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -v grep | grep 'Ssl')
+        printf "%5d %s\n" "$cnt" "$info"
+        IFS=$'\n'
+    done
+    IFS=${original_ifs}
+}
+function ps_seal()
+{
+    ps_seal_core seal conf
+}
+function ps_archiver()
+{
+    ps_seal_core archiver xml
+}
+function ps_importer()
+{
+    ps_seal_core importer xml
+}
+function ps_hyena()
+{
+    ps_seal_core hyena xml
+}
+function ps_memberbo()
+{
+    ps_seal_core memberbo conf/memberbo.xml.*
+}
+function ps_pynmann()
+{
+    ps -e -o user,pid,ppid,lstart,stat,command | grep "pynmann.main" | grep -v grep | grep -v tail | grep -v vim
+}
+
+function get_prompt_color_core()
+{
+    local color=${1}
+    local conf_file=${2}
+    local hostname=$(/bin/hostname)
+
+    while read line
+    do
+        pattern=$(echo "${line}" | awk '{print $1}')
+        color=$(echo "${line}" | awk '{print $2}')
+        case "${hostname}" in
+            ${pattern})
+                break
+                ;;
+            *)
+                ;;
+        esac
+    done < ${conf_file}
+    echo ${color}
+}
+function get_prompt_color()
+{
+    local default_color='1;30'
+    local conf_file=${1}
+
+    if [ ! -e ${conf_file} ];
+    then
+        echo "${default_color}"
+    else
+        get_prompt_color_core "${default_color}" "${conf_file}"
+    fi
+}
+
