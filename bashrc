@@ -36,7 +36,7 @@ export PS1="\[\033[${prompt_color}m\]\u@${HOSTNAME}:\w\$ \[\033[0m\]"
 
 if [ "${USE_PROMPT_COMMAND}" == 'yes' ]; # terminal title
 then
-    export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}\007"'
+    export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD##*/}\007"'
 fi
 
 #########################################################
