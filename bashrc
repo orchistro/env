@@ -173,3 +173,5 @@ then
     fi
 fi
 
+export BOOST_ROOT=/usr/local/boost_1_75_0
+
