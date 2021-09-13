@@ -159,5 +159,5 @@ function alert_ssh_alive_interval()
     echo "==============================================================================="
 }
 
-grep 'ServerAliveInterval.*30' /etc/ssh/ssh_config 1> /dev/null && alert_ssh_alive_interval
+grep 'ServerAliveInterval.*30' /etc/ssh/ssh_config 1> /dev/null || alert_ssh_alive_interval
 
