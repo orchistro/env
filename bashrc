@@ -148,3 +148,16 @@ then
     fi
 fi
 
+function alert_ssh_alive_interval()
+{
+    echo "==============================================================================="
+    echo "Need to reset ServerAliveInterval in /etc/ssh/ssh_config."
+    echo "Run Following:"
+    echo "-------------------------------------------------------------------------------"
+    echo "grep 'ServerAliveInterval.*30' /etc/ssh/ssh_config 1> /dev/null || \\"
+    echo "sudo /bin/bash -c 'echo -e \"\tServerAliveInterval 30\" >> /etc/ssh/ssh_config'"
+    echo "==============================================================================="
+}
+
+grep 'ServerAliveInterval.*30' /etc/ssh/ssh_config 1> /dev/null && alert_ssh_alive_interval
+
