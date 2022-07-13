@@ -1,0 +1,17 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# User specific aliases and functions
+
+#export LC_ALL=ko_KR.UTF-8
+#export LANG=ko_KR.UTF-8
+
+# Source user definitions
+user_rc=`kinit </dev/null 2>&1 | head -1 | awk '{print ".bashrc_"$3}' | sed "s/@NAVER.COM://"`
+if [ -e $user_rc ]; then
+        . $user_rc
+fi

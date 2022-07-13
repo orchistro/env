@@ -1,0 +1,276 @@
+unset LC_ALL
+export LANG='ko_KR.UTF-8'
+export LC_MESSAGES='C'
+export LC_TIME='C'
+export LC_CTYPE='ko_KR.UTF-8'
+
+export LESSCHARSET=utf-8
+
+ulimit -c unlimited
+
+alias vi=''
+unalias vi
+
+alias ls='ls -F --color=auto'
+alias ll='ls -alF --color=auto'
+
+alias kinit='/usr/nhnkrb5/bin/kinit -f -l 1d'
+alias rlogin='/usr/nhnkrb5/bin/rlogin -x -F'
+
+alias less="less -rfX"
+
+alias UTF8='/usr/bin/iconv -f euc-kr -t utf-8'
+alias EUCKR='/usr/bin/iconv -f utf-8 -t euc-kr'
+
+alias svnlog='LC_ALL=ko_KR.UTF-8 svn log'
+
+export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD}\007"'
+
+export EDITOR=vim
+
+export PATH=/usr/nhnkrb5/bin:/usr/nhnkrb5/sbin:/usr/nhnkrb5/bin/:/usr/nhnkrb5/sbin/:/usr/local/bin:/usr/local/sbin:/bin:/usr/bin:/usr/sbin:/usr/ucb:/etc:/nvmail/bin:/usr/ccs/bin:/sbin:/naver/bin:/nvmail/external/apache/bin:/nvmail/external/php/bin:/nvmail/op:/nvmail/external/mysql/bin:/home1/irteam/nanoBox/box/1.6.3-h2/bin:/naver/scripts:/nvmail/op/scripts
+
+export ALTIBASE_HOME=/data1/shawn/altibase
+export ALTIBASE_PORT=20300
+
+export PATH=${PATH}:${ALTIBASE_HOME}/bin
+
+#########################################################
+# LS_COLORS
+#########################################################
+export LS_COLORS=':di=00;34:ex=00;32:ln=00;36'
+# ls of OSX uses LSCOLORS instead of LS_COLORS. Refer to the man page of osx ls
+export LSCOLORS='exgxcxdxcxegedabagacad'
+
+# disabling auto-logout
+export TMOUT=
+
+# disabling altscreen
+export LESS="-rfX"
+export MANPAGER="/usr/bin/less"
+
+
+#########################################################
+# grep options
+# requires gnu grep version 2.6+
+#########################################################
+grep_version_str=$(grep --version|awk '/GNU grep/ {print $NF}')
+grep_version_maj=$(echo ${grep_version_str} | awk -F'.' '{print $1}')
+grep_version_min=$(echo ${grep_version_str} | awk -F'.' '{print $2}')
+
+grep_exclude_dirs='.svn'
+grep_exclude_files='*~ .\* #* *.map tags TAGS *_heapdebug *.output *.hpp *.d'
+grep_option_str='-I --color'
+
+for i in ${grep_exclude_files}
+do
+    grep_option_str="${grep_option_str} --exclude=${i}"
+done
+
+# for only GNU grep 2.6+, set exclude dir
+# echo "grep maj = $grep_version_maj min=$grep_version_min"
+if [ $grep_version_maj -ge 2 ];
+then
+    if [ $grep_version_min -ge 6 ];
+    then
+        for i in ${grep_exclude_dirs}
+        do
+            grep_option_str="${grep_option_str} --exclude-dir=${i}"
+        done
+    fi
+fi
+
+export GREP_OPTIONS=${grep_option_str}
+
+################################################################
+# Prompt Color
+################################################################
+# hostName=$(hostname | awk --field-separator '-' '{print $1}' | awk --field-separator '.' '{print $1}' | sed 's/[0-9]*//g')
+hostName=$(hostname)
+
+tmpfile=${HOME}/__hostname
+echo ${hostName} > ${tmpfile}
+
+promptColor='1;30'
+
+while read line
+do
+    pattern=$(echo ${line} | awk '{print $1}')
+
+    grep ${pattern} ${tmpfile} > /dev/null 2>&1
+
+    if [ $? -eq 0 ];
+    then
+        promptColor=$(echo ${line} | awk '{print $2}')
+        break
+    fi
+done < .prompt_color_shawn
+
+rm -f ${tmpfile}
+
+export PS1="\[\033[${promptColor}m\]\u@${hostName}:\w\$ \[\033[0m\]"
+
+function conncsql
+{
+    ksu irteamsu -e /usr/bin/sudo /bin/bash -c "su - cubrid1 --command='csql -u maildb maildb02@localhost'"
+}
+
+function ps_carbon()
+{
+    local name_to_grep=$1
+    printf "  CNT %s\n" "$(ps -e -o user,pid,ppid,lstart,stat,command | head -1)"
+    declare -a process_names
+    original_ifs=$IFS
+    IFS=$'\n'
+    process_names=( $(ps -e -L -o command | grep -w "${name_to_grep}" | grep conf | grep xml | grep -v grep | grep -v tail | sort | uniq) )
+    IFS=${original_ifs}
+
+    IFS=$'\n'
+    for p in ${process_names[@]};
+    do
+        IFS=${original_ifs}
+        cnt=$(ps -e -L -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -v grep | wc -l)
+        info=$(ps -e -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -v grep | grep 'Ssl')
+        printf "%5d %s\n" "$cnt" "$info"
+        IFS=$'\n'
+    done
+    IFS=${original_ifs}
+}
+function ps_seal()
+{
+    ps_carbon seal
+}
+function ps_archiver()
+{
+    ps_carbon archiver
+}
+function ps_hyena()
+{
+    ps_carbon hyena
+}
+function ps_memberbo()
+{
+    ps_carbon memberbo
+}
+function ps_keystore()
+{
+    ps_carbon keystore
+}
+function ps_eraser()
+{
+    ps_carbon eraser
+}
+
+function ps_fgw_core()
+{
+    local name_to_grep=$1
+    printf "  CNT %s\n" "$(ps -e -o user,pid,ppid,lstart,stat,command | head -1)"
+    declare -a process_names
+    original_ifs=$IFS
+    IFS=$'\n'
+    process_names=( $(ps -e -L -o command | grep -w "${name_to_grep}" | grep conf | grep xml | grep -v grep | grep -v tail | sort | uniq) )
+    IFS=${original_ifs}
+
+    IFS=$'\n'
+    for p in ${process_names[@]};
+    do
+        echo -n "===== ====== ======== ====== ======================== ==== "
+        printf "%.0s=" $(seq 1 ${#p})
+        echo
+        IFS=${original_ifs}
+        cnt_Ss=$(ps -e -L -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -w 'Ss' | grep -v grep | wc -l)
+        info_Ss=$(ps -e -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -w 'Ss' | grep -v grep)
+        printf "%5d %s\n" "$cnt_Ss" "$info_Ss"
+        cnt_Sl=$(ps -e -L -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -w 'Sl' | grep -v grep | wc -l)
+        info_Sl=$(ps -e -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -w 'Sl' | grep -v grep)
+        printf "%5d %s\n" "$cnt_Sl" "$info_Sl"
+        IFS=$'\n'
+    done
+    IFS=${original_ifs}
+}
+function ps_fgw()
+{
+    ps_fgw_core filegw
+}
+function ps_topd_core()
+{
+    name_to_grep="$1\\|$2"
+    printf "  CNT %s\n" "$(ps -e -o user,pid,ppid,lstart,stat,command | head -1)"
+    declare -a process_names
+    original_ifs=$IFS
+    IFS=$'\n'
+    process_names=( $(ps -e -L -o command | grep -w "${name_to_grep}" | grep conf | grep -v grep | grep -v tail | sort | uniq) )
+    IFS=${original_ifs}
+
+    IFS=$'\n'
+    for p in ${process_names[@]};
+    do
+        IFS=${original_ifs}
+        cnt=$(ps -e -L -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -v grep | wc -l)
+        info=$(ps -e -o user,pid,ppid,lstart,stat,command | grep "${p}" | grep -v grep | grep 'Ssl')
+        printf "%5d %s\n" "$cnt" "$info"
+        IFS=$'\n'
+    done
+    IFS=${original_ifs}
+}
+function ps_topd()
+{
+    ps_topd_core topdtcpd topdrcvd
+}
+
+
+function is_number()
+{
+    local argument=${1}
+
+    if ! [[ "${argument}" =~ ^[0-9]+([.][0-9]+)?$ ]];
+    then
+        echo "0"
+    else
+        echo "1"
+    fi
+}
+
+function vi()
+{
+    vim -u ${HOME}/.vimrc_shawn -c "set path+=${PWD}/include" $@
+}
+
+
+export LD_LIBRARY_PATH=/usr/local/lib
+
+function enable_devtoolset()
+{
+    local no=${1}
+    if [[ -f "/opt/rh/devtoolset-${no}/enable" ]];
+    then
+        source /opt/rh/devtoolset-${no}/enable
+        echo ">>>>> Devtoolset ${no} enabled"
+        return 0
+    else
+        return 1
+    fi
+}
+
+function detect_and_enable_devtoolset()
+{
+    if enable_devtoolset 11;
+    then
+        return 1
+    elif enable_devtoolset 7;
+    then
+        return 1
+    else
+        echo ">>>>> No devtoolset"
+    fi
+}
+
+function print_gcc_version()
+{
+    echo -n ">>>>> "
+    gcc --version | head -1
+}
+
+detect_and_enable_devtoolset
+print_gcc_version
+
