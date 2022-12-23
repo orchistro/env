@@ -119,7 +119,7 @@ map <F4> jjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11
 map <F5> /self.list_mail_by_all()\n.*expected<CR>jc%
 map <F6> /self.list_folder_multidepth()\n.*expected<CR>jc%
 map <F7> 02f]V%:norm 0i                  <CR>$%2j
-map <F8> <ESC>:set fileencoding=utf-8<CR>:w<CR>
+map <F8> <ESC>:w<CR>:make -j 8 test<CR>
 map <F10> <ESC>:w<CR>:make -j 8<CR>
 map <F11> <Esc>:%s/'nm_test_ix.*com'/self.mail_addr/g<CR>:w<CR>
 
