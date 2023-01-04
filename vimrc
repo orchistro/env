@@ -1,12 +1,5 @@
 set nocompatible
 
-if &term == 'xterm-256color'
-    set <S-F1>=[1;2P
-    set <S-F2>=[1;2Q
-    set <S-F3>=[1;2R
-    set <S-F4>=[1;2S
-endif
-
 " Disabling 'Alternate Screen'
 " Refer to http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
@@ -74,9 +67,6 @@ autocmd BufNewFile,BufRead *.ly            setf yacc
 map Q gq
 " map K k
 
-" Make p in Visual mode replace the selected text with the "" register.
-vnoremap p <Esc>:let current_reg = @"<CR>gvs<C-R>=current_reg<CR><Esc>
-
 nnoremap <silent> <S-F2> :tp<cr>            " Go to previous tag
 nnoremap <silent> <S-F3> :tn<cr>            " Go to next tag
 nnoremap <silent> <F2>   :cp<cr>            " Go to previous error line (compile result)
@@ -85,7 +75,6 @@ nnoremap <silent> <F3>   :cn<cr>            " Go to next error line (compile res
 " nnoremap <silent> <S-F3> :cnew<cr>          " Go to newer quickfix window
 
 noremap <F9> :Rgrep<CR>
-noremap <F6> :set invpaste<CR>
 
 " Split window into two vertical widows.
 " Each of them are of 80 column width and of 68 lines height.
@@ -103,6 +92,9 @@ nnoremap <S-F11> mr:s/,\(\s*$\)\@!/,\r/g<CR>=`r
 
 nnoremap <S-F10> :!./maketags.sh<CR>
 
+map <F10> <ESC>:make -j 8<CR>
+map <F11> <ESC>:make -j 40 test<CR>
+
 " Scroll screen by 3 lines. Upwards, downwards.
 noremap <C-U> 3<C-U>
 noremap <C-D> 3<C-D>
@@ -113,15 +105,6 @@ inoremap <C-Y> <C-O><C-Y>
 
 " Making Ctrl-BS to erase a word before.
 map! <C-BS> <C-W>
-
-
-map <F4> jjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11Jjjj11J:
-map <F5> /self.list_mail_by_all()\n.*expected<CR>jc%
-map <F6> /self.list_folder_multidepth()\n.*expected<CR>jc%
-map <F7> 02f]V%:norm 0i                  <CR>$%2j
-map <F8> <ESC>:set fileencoding=utf-8<CR>:w<CR>
-map <F10> <ESC>:w<CR>:make -j 8<CR>
-map <F11> <Esc>:%s/'nm_test_ix.*com'/self.mail_addr/g<CR>:w<CR>
 
 " Note that grep's options are set by env variable GREP_OPTIONS
 let Grep_Path = '/usr/local/bin/grep'
