@@ -1,4 +1,3 @@
 #!/bin/bash
-# ssh pcon.nhnsystem.com -l shawn
 ssh pcon.nhnsystem.com -l shawn -oHostKeyAlgorithms=+ssh-rsa
 

@@ -1,3 +1,2 @@
 #!/bin/bash
 ssh ncon1.nhnsystem.com -l shawn -oHostKeyAlgorithms=+ssh-rsa
-# ssh ncon1.nhnsystem.com -l shawn

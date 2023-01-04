@@ -106,6 +106,9 @@ inoremap <C-Y> <C-O><C-Y>
 " Making Ctrl-BS to erase a word before.
 map! <C-BS> <C-W>
 
+map <F10> <ESC>:make -j 8<CR>
+map <F11> <Esc>:make -j 8 test<CR>
+
 " Note that grep's options are set by env variable GREP_OPTIONS
 let Grep_Path = '/usr/local/bin/grep'
 let Grep_OpenQuickfixWindow = 1
@@ -121,7 +124,6 @@ let g:load_doxygen_syntax=1
 let g:doxygen_enhanced_color=1
 
 set path+=.,/usr/include/,/usr/local/include,./include
-set path+=~/shawn/index-seal.trunk/box-model-generator/include,~/shawn/index-seal.trunk/include
 
 
 " Useful stuffs though not being used.
