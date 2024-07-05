@@ -1,3 +1,3 @@
 #!/bin/bash
-ssh pcon.nhnsystem.com -l shawn -oHostKeyAlgorithms=+ssh-rsa
+ssh pcon.navercorp.com -l shawn -oHostKeyAlgorithms=+ssh-rsa
 
