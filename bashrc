@@ -15,7 +15,7 @@ umask 0002
 
 ENVDIR=${HOME}/env
 
-export HOSTNAME=$(/bin/hostname)
+export HOSTNAME=$(/bin/hostname | sed 's/-.*//g')
 
 # To disable alternate screen feature
 export LESS="-rfX"

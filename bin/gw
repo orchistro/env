@@ -1,2 +1,2 @@
 #!/bin/bash
-ssh ncon1.nhnsystem.com -l shawn -oHostKeyAlgorithms=+ssh-rsa
+ssh ncon2.nhnsystem.com -l shawn -oHostKeyAlgorithms=+ssh-rsa
