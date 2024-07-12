@@ -110,7 +110,7 @@ map <F10> <ESC>:make -j 8<CR>
 map <F11> <Esc>:make -j 8 test<CR>
 
 " Note that grep's options are set by env variable GREP_OPTIONS
-let Grep_Path = '/usr/local/bin/grep'
+" let Grep_Path = '/usr/bin/grep'
 let Grep_OpenQuickfixWindow = 1
 let Grep_Default_Options = '-rn'
 
